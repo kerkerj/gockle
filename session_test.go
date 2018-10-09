@@ -17,6 +17,7 @@ const (
 	ksDrop    = "drop keyspace gockle_test"
 	ksDropIf  = "drop keyspace if exists gockle_test"
 	rowInsert = "insert into gockle_test.test (id, n) values (1, 2)"
+	rowInsert2 = "insert into gockle_test.test (id, n) values (3, 4)"
 	tabCreate = "create table gockle_test.test(id int primary key, n int)"
 	tabDrop   = "drop table gockle_test.test"
 )
@@ -156,6 +157,7 @@ func TestSessionMock(t *testing.T) {
 		{"ScanMapTx", []interface{}{"a", map[string]interface{}{"b": 2}, []interface{}{1}}, []interface{}{true, e}},
 		{"Tables", []interface{}{""}, []interface{}{[]string(nil), nil}},
 		{"Tables", []interface{}{"a"}, []interface{}{[]string{"b"}, e}},
+		{"Query", []interface{}{"a", []interface{}{1}}, []interface{}{query{}}},
 	})
 }
 
