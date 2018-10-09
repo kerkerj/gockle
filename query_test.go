@@ -3,6 +3,7 @@ package gockle
 import (
 	"context"
 	"fmt"
+	"github.com/gocql/gocql"
 	"reflect"
 	"testing"
 )
@@ -62,6 +63,7 @@ func TestQueryMock(t *testing.T) {
 		arguments []interface{}
 		results   []interface{}
 	}{
+		{"Consistency", []interface{}{gocql.One}, []interface{}{m}},
 		{"PageSize", []interface{}{1}, []interface{}{m}},
 		{"WithContext", []interface{}{ctx}, []interface{}{m}},
 		{"PageState", []interface{}{[]byte{1}}, []interface{}{m}},
