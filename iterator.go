@@ -55,6 +55,7 @@ func (m IteratorMock) ScanMap(results map[string]interface{}) bool {
 func (m IteratorMock) WillSwitchPage() bool {
 	return m.Called().Bool(0)
 }
+
 // PageState implements Iterator.
 func (m IteratorMock) PageState() []byte {
 	return m.Called().Bytes(0)

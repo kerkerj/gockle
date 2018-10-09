@@ -13,13 +13,13 @@ import (
 const version = 4
 
 const (
-	ksCreate  = "create keyspace gockle_test with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};"
-	ksDrop    = "drop keyspace gockle_test"
-	ksDropIf  = "drop keyspace if exists gockle_test"
-	rowInsert = "insert into gockle_test.test (id, n) values (1, 2)"
+	ksCreate   = "create keyspace gockle_test with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};"
+	ksDrop     = "drop keyspace gockle_test"
+	ksDropIf   = "drop keyspace if exists gockle_test"
+	rowInsert  = "insert into gockle_test.test (id, n) values (1, 2)"
 	rowInsert2 = "insert into gockle_test.test (id, n) values (3, 4)"
-	tabCreate = "create table gockle_test.test(id int primary key, n int)"
-	tabDrop   = "drop table gockle_test.test"
+	tabCreate  = "create table gockle_test.test(id int primary key, n int)"
+	tabDrop    = "drop table gockle_test.test"
 )
 
 func TestNewSession(t *testing.T) {
