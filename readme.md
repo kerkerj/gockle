@@ -7,6 +7,18 @@
 
 forked from https://github.com/willfaught/gockle
 
-commit [40e207](https://github.com/kerkerj/gockle/commit/40e20799a09a5bf8df8f89b4fc70492a4d3d136b) is referenced by [rtfb@25a7eea](https://github.com/rtfb/gockle/commit/25a7eea56ca2b26ec9e36dc0a89c7283e10179a5) thanks!
-
 *Note: Test coverage is low because there is no Cassandra database for the tests to use. Providing one yields 97.37% test coverage. Some code is uncovered because gocql cannot be mocked. This is one difficulty your code avoids by using gockle.*
+
+## Differences
+
+1. Query Interface (commit [40e207](https://github.com/kerkerj/gockle/commit/40e20799a09a5bf8df8f89b4fc70492a4d3d136b) is from [rtfb@25a7eea](https://github.com/rtfb/gockle/commit/25a7eea56ca2b26ec9e36dc0a89c7283e10179a5) thanks!)
+
+    1. And `Consistency` method in Query Interface
+
+2. change to use [testify/mock](https://github.com/stretchr/testify)
+3. remove tests about mock structs (such as BatchMock, QueryMock...), I think there's no need to test mock file.
+
+## TODO
+
+- [ ] Enhance test coverage
+
