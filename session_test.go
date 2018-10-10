@@ -1,13 +1,11 @@
 package gockle
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
 
 	"github.com/gocql/gocql"
-	"github.com/maraino/go-mock"
 )
 
 const version = 4
@@ -130,37 +128,6 @@ func TestSessionMetadata(t *testing.T) {
 	}
 }
 
-func TestSessionMock(t *testing.T) {
-	var m, e = &SessionMock{}, fmt.Errorf("e")
-
-	testMock(t, m, &m.Mock, []struct {
-		method    string
-		arguments []interface{}
-		results   []interface{}
-	}{
-		{"Close", nil, nil},
-		{"Columns", []interface{}{"", ""}, []interface{}{map[string]gocql.TypeInfo(nil), nil}},
-		{"Columns", []interface{}{"a", "b"}, []interface{}{map[string]gocql.TypeInfo{"c": gocql.NativeType{}}, e}},
-		{"Batch", []interface{}{BatchKind(0)}, []interface{}{(*batch)(nil)}},
-		{"Batch", []interface{}{BatchKind(1)}, []interface{}{&batch{}}},
-		{"Exec", []interface{}{"", []interface{}(nil)}, []interface{}{nil}},
-		{"Exec", []interface{}{"a", []interface{}{1}}, []interface{}{e}},
-		{"Scan", []interface{}{"", []interface{}(nil), []interface{}(nil)}, []interface{}{nil}},
-		{"Scan", []interface{}{"a", []interface{}{1}, []interface{}{1}}, []interface{}{e}},
-		{"ScanIterator", []interface{}{"", []interface{}(nil)}, []interface{}{(*iterator)(nil)}},
-		{"ScanIterator", []interface{}{"a", []interface{}{1}}, []interface{}{iterator{}}},
-		{"ScanMap", []interface{}{"", map[string]interface{}(nil), []interface{}(nil)}, []interface{}{nil}},
-		{"ScanMap", []interface{}{"a", map[string]interface{}{"b": 2}, []interface{}{1}}, []interface{}{e}},
-		{"ScanMapSlice", []interface{}{"", []interface{}(nil)}, []interface{}{[]map[string]interface{}(nil), nil}},
-		{"ScanMapSlice", []interface{}{"a", []interface{}{1}}, []interface{}{[]map[string]interface{}{{"b": 2}}, e}},
-		{"ScanMapTx", []interface{}{"", map[string]interface{}(nil), []interface{}(nil)}, []interface{}{false, nil}},
-		{"ScanMapTx", []interface{}{"a", map[string]interface{}{"b": 2}, []interface{}{1}}, []interface{}{true, e}},
-		{"Tables", []interface{}{""}, []interface{}{[]string(nil), nil}},
-		{"Tables", []interface{}{"a"}, []interface{}{[]string{"b"}, e}},
-		{"Query", []interface{}{"a", []interface{}{1}}, []interface{}{query{}}},
-	})
-}
-
 func TestSessionQuery(t *testing.T) {
 	var s = newSession(t)
 
@@ -259,42 +226,4 @@ func newSession(t *testing.T) Session {
 	}
 
 	return NewSession(s)
-}
-
-func testMock(t *testing.T, i interface{}, m *mock.Mock, tests []struct {
-	method    string
-	arguments []interface{}
-	results   []interface{}
-}) {
-	var v = reflect.ValueOf(i)
-
-	for _, test := range tests {
-		t.Log("Test:", test)
-		m.Reset()
-		m.When(test.method, test.arguments...).Return(test.results...)
-
-		var vs []reflect.Value
-
-		for _, a := range test.arguments {
-			vs = append(vs, reflect.ValueOf(a))
-		}
-
-		var method = v.MethodByName(test.method)
-
-		if method.Type().IsVariadic() {
-			vs = method.CallSlice(vs)
-		} else {
-			vs = method.Call(vs)
-		}
-
-		var is []interface{}
-
-		for _, v := range vs {
-			is = append(is, v.Interface())
-		}
-
-		if !reflect.DeepEqual(is, test.results) {
-			t.Errorf("Actual %v, expected %v", is, test.results)
-		}
-	}
 }

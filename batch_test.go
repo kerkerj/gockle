@@ -1,7 +1,6 @@
 package gockle
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -55,21 +54,4 @@ func TestBatch(t *testing.T) {
 	if _, err := b.ExecTx(); err == nil {
 		t.Error("Actual no error, expected error")
 	}
-}
-
-func TestBatchMock(t *testing.T) {
-	var m, e = &BatchMock{}, fmt.Errorf("e")
-
-	testMock(t, m, &m.Mock, []struct {
-		method    string
-		arguments []interface{}
-		results   []interface{}
-	}{
-		{"Add", []interface{}{"", []interface{}(nil)}, nil},
-		{"Add", []interface{}{"a", []interface{}{1}}, nil},
-		{"Exec", nil, []interface{}{nil}},
-		{"Exec", nil, []interface{}{e}},
-		{"ExecTx", nil, []interface{}{([]map[string]interface{})(nil), nil}},
-		{"ExecTx", nil, []interface{}{[]map[string]interface{}{}, e}},
-	})
 }

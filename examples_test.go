@@ -3,7 +3,7 @@ package gockle
 import (
 	"fmt"
 
-	"github.com/maraino/go-mock"
+	"github.com/stretchr/testify/mock"
 )
 
 var mySession = &SessionMock{}
@@ -11,21 +11,20 @@ var mySession = &SessionMock{}
 func ExampleIterator_ScanMap() {
 	var iteratorMock = &IteratorMock{}
 
-	iteratorMock.When("ScanMap", mock.Any).Call(func(m map[string]interface{}) bool {
+	iteratorMock.On("ScanMap", mock.Anything).Return(func(m map[string]interface{}) bool {
 		m["id"] = 1
 		m["name"] = "alex"
-
 		return false
 	})
 
-	iteratorMock.When("Close").Return(nil)
+	iteratorMock.On("Close").Return(nil)
 
 	var sessionMock = &SessionMock{}
 
 	const query = "select * from users"
 
-	sessionMock.When("ScanIterator", query, mock.Any).Return(iteratorMock)
-	sessionMock.When("Close").Return()
+	sessionMock.On("ScanIterator", query, mock.Anything).Return(iteratorMock)
+	sessionMock.On("Close").Return(nil)
 
 	var session Session = sessionMock
 	var iterator = session.ScanIterator(query)
@@ -49,13 +48,13 @@ func ExampleIterator_ScanMap() {
 func ExampleSession_Batch() {
 	var batchMock = &BatchMock{}
 
-	batchMock.When("Add", "insert into users (id, name) values (1, 'alex')", mock.Any).Return()
-	batchMock.When("Exec").Return(fmt.Errorf("invalid"))
+	batchMock.On("Add", "insert into users (id, name) values (1, 'alex')", mock.Anything).Return()
+	batchMock.On("Exec").Return(fmt.Errorf("invalid"))
 
 	var sessionMock = &SessionMock{}
 
-	sessionMock.When("Batch", BatchLogged).Return(batchMock)
-	sessionMock.When("Close").Return()
+	sessionMock.On("Batch", BatchLogged).Return(batchMock)
+	sessionMock.On("Close").Return()
 
 	var session Session = sessionMock
 	var batch = session.Batch(BatchLogged)
@@ -76,8 +75,8 @@ func ExampleSession_ScanMapSlice() {
 
 	const query = "select * from users"
 
-	sessionMock.When("ScanMapSlice", query, mock.Any).Return([]map[string]interface{}{{"id": 1, "name": "alex"}}, nil)
-	sessionMock.When("Close").Return()
+	sessionMock.On("ScanMapSlice", query, mock.Anything).Return([]map[string]interface{}{{"id": 1, "name": "alex"}}, nil)
+	sessionMock.On("Close").Return()
 
 	var session Session = sessionMock
 	var rows, _ = session.ScanMapSlice(query)

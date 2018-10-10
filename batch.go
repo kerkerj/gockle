@@ -26,7 +26,7 @@ type Batch interface {
 }
 
 var (
-	_ Batch = BatchMock{}
+	_ Batch = &BatchMock{}
 	_ Batch = batch{}
 )
 

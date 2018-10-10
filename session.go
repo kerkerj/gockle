@@ -70,7 +70,7 @@ type Session interface {
 }
 
 var (
-	_ Session = SessionMock{}
+	_ Session = &SessionMock{}
 	_ Session = session{}
 )
 

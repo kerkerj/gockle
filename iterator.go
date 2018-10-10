@@ -26,7 +26,7 @@ type Iterator interface {
 }
 
 var (
-	_ Iterator = IteratorMock{}
+	_ Iterator = &IteratorMock{}
 	_ Iterator = iterator{}
 )
 

@@ -2,7 +2,6 @@ package gockle
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -161,25 +160,4 @@ func TestIteratorPaging(t *testing.T) {
 			t.Errorf("Actual PageState not nil, expected nil")
 		}
 	}
-}
-
-func TestIteratorMock(t *testing.T) {
-	var m, e = &IteratorMock{}, fmt.Errorf("e")
-
-	testMock(t, m, &m.Mock, []struct {
-		method    string
-		arguments []interface{}
-		results   []interface{}
-	}{
-		{"Close", nil, []interface{}{nil}},
-		{"Close", nil, []interface{}{e}},
-		{"Scan", []interface{}{[]interface{}(nil)}, []interface{}{false}},
-		{"Scan", []interface{}{[]interface{}{1}}, []interface{}{true}},
-		{"ScanMap", []interface{}{map[string]interface{}(nil)}, []interface{}{false}},
-		{"ScanMap", []interface{}{map[string]interface{}{"a": 1}}, []interface{}{true}},
-		{"WillSwitchPage", nil, []interface{}{false}},
-		{"WillSwitchPage", nil, []interface{}{true}},
-		{"PageState", nil, []interface{}{[]byte{}}},
-		{"PageState", nil, []interface{}{[]byte{1}}},
-	})
 }

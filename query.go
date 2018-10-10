@@ -47,7 +47,7 @@ type Query interface {
 }
 
 var (
-	_ Query = QueryMock{}
+	_ Query = &QueryMock{}
 	_ Query = query{}
 )
 

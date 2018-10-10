@@ -2,8 +2,6 @@ package gockle
 
 import (
 	"context"
-	"fmt"
-	"github.com/gocql/gocql"
 	"reflect"
 	"testing"
 )
@@ -52,28 +50,4 @@ func TestQuery(t *testing.T) {
 	} else {
 		t.Errorf("Actual error %v, expected no error", err)
 	}
-}
-
-func TestQueryMock(t *testing.T) {
-	var m, e = &QueryMock{}, fmt.Errorf("e")
-	ctx := context.Background()
-	it := &IteratorMock{}
-	testMock(t, m, &m.Mock, []struct {
-		method    string
-		arguments []interface{}
-		results   []interface{}
-	}{
-		{"Consistency", []interface{}{gocql.One}, []interface{}{m}},
-		{"PageSize", []interface{}{1}, []interface{}{m}},
-		{"WithContext", []interface{}{ctx}, []interface{}{m}},
-		{"PageState", []interface{}{[]byte{1}}, []interface{}{m}},
-		{"Scan", []interface{}{[]interface{}(nil)}, []interface{}{e}},
-		{"Scan", []interface{}{[]interface{}{1}}, []interface{}{nil}},
-		{"Exec", nil, []interface{}{e}},
-		{"Exec", nil, []interface{}{nil}},
-		{"Iter", nil, []interface{}{it}},
-		{"MapScan", []interface{}{map[string]interface{}(nil)}, []interface{}{nil}},
-		{"MapScan", []interface{}{map[string]interface{}{"a": 1}}, []interface{}{e}},
-		{"Release", nil, nil},
-	})
 }
