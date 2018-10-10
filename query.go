@@ -3,7 +3,6 @@ package gockle
 import (
 	"context"
 	"github.com/gocql/gocql"
-	"github.com/maraino/go-mock"
 )
 
 // Query represents a CQL query.
@@ -52,56 +51,6 @@ var (
 	_ Query = query{}
 )
 
-// QueryMock is a mock Query. See github.com/maraino/go-mock.
-type QueryMock struct {
-	mock.Mock
-}
-
-// Consistency implements Query.
-func (m QueryMock) Consistency(c gocql.Consistency) Query {
-	return m.Called(c).Get(0).(Query)
-}
-
-// PageSize implements Query.
-func (m QueryMock) PageSize(n int) Query {
-	return m.Called(n).Get(0).(Query)
-}
-
-// WithContext implements Query.
-func (m QueryMock) WithContext(ctx context.Context) Query {
-	return m.Called(ctx).Get(0).(Query)
-}
-
-// PageState implements Query.
-func (m QueryMock) PageState(state []byte) Query {
-	return m.Called(state).Get(0).(Query)
-}
-
-// Exec implements Query.
-func (m QueryMock) Exec() error {
-	return m.Called().Error(0)
-}
-
-// Iter implements Query.
-func (m QueryMock) Iter() Iterator {
-	return m.Called().Get(0).(Iterator)
-}
-
-// MapScan implements Query.
-func (m QueryMock) MapScan(mm map[string]interface{}) error {
-	return m.Called(mm).Error(0)
-}
-
-// Scan implements Query.
-func (m QueryMock) Scan(dest ...interface{}) error {
-	return m.Called(dest).Error(0)
-}
-
-// Release implements Query.
-func (m QueryMock) Release() {
-	m.Called()
-}
-
 type query struct {
 	q *gocql.Query
 }
@@ -109,27 +58,35 @@ type query struct {
 func (q query) Consistency(c gocql.Consistency) Query {
 	return &query{q: q.q.Consistency(c)}
 }
+
 func (q query) PageSize(n int) Query {
 	return &query{q: q.q.PageSize(n)}
 }
+
 func (q query) WithContext(ctx context.Context) Query {
 	return &query{q: q.q.WithContext(ctx)}
 }
+
 func (q query) PageState(state []byte) Query {
 	return &query{q: q.q.PageState(state)}
 }
+
 func (q query) Exec() error {
 	return q.q.Exec()
 }
+
 func (q query) Iter() Iterator {
 	return &iterator{i: q.q.Iter()}
 }
+
 func (q query) MapScan(m map[string]interface{}) error {
 	return q.q.MapScan(m)
 }
+
 func (q query) Scan(dest ...interface{}) error {
 	return q.q.Scan(dest...)
 }
+
 func (q query) Release() {
 	q.q.Release()
 }

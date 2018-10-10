@@ -2,7 +2,6 @@ package gockle
 
 import (
 	"github.com/gocql/gocql"
-	"github.com/maraino/go-mock"
 )
 
 // Iterator iterates CQL query result rows.
@@ -31,36 +30,6 @@ var (
 	_ Iterator = iterator{}
 )
 
-// IteratorMock is a mock Iterator. See github.com/maraino/go-mock.
-type IteratorMock struct {
-	mock.Mock
-}
-
-// Close implements Iterator.
-func (m IteratorMock) Close() error {
-	return m.Called().Error(0)
-}
-
-// Scan implements Iterator.
-func (m IteratorMock) Scan(results ...interface{}) bool {
-	return m.Called(results).Bool(0)
-}
-
-// ScanMap implements Iterator.
-func (m IteratorMock) ScanMap(results map[string]interface{}) bool {
-	return m.Called(results).Bool(0)
-}
-
-// WillSwitchPage implements Iterator.
-func (m IteratorMock) WillSwitchPage() bool {
-	return m.Called().Bool(0)
-}
-
-// PageState implements Iterator.
-func (m IteratorMock) PageState() []byte {
-	return m.Called().Bytes(0)
-}
-
 type iterator struct {
 	i *gocql.Iter
 }
@@ -80,6 +49,7 @@ func (i iterator) ScanMap(results map[string]interface{}) bool {
 func (i iterator) WillSwitchPage() bool {
 	return i.i.WillSwitchPage()
 }
+
 func (i iterator) PageState() []byte {
 	return i.i.PageState()
 }
