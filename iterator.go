@@ -23,6 +23,10 @@ type Iterator interface {
 	// PageState return the current paging state for a query which can be used
 	// for subsequent quries to resume paging this point.
 	PageState() []byte
+
+	// SliceMap is a helper function to make the API easier to use
+	// returns the data from the query in the form of []map[string]interface{}
+	SliceMap() ([]map[string]interface{}, error)
 }
 
 var (
@@ -52,4 +56,8 @@ func (i iterator) WillSwitchPage() bool {
 
 func (i iterator) PageState() []byte {
 	return i.i.PageState()
+}
+
+func (i iterator) SliceMap() ([]map[string]interface{}, error) {
+	return i.i.SliceMap()
 }

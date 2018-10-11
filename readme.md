@@ -15,8 +15,12 @@ forked from https://github.com/willfaught/gockle
 
     1. And `Consistency` method in Query Interface
 
-2. change to use [testify/mock](https://github.com/stretchr/testify)
-3. remove tests about mock structs (such as BatchMock, QueryMock...), I think there's no need to test mock file.
+2. Iterator Interface
+
+    1. Add `SliceMap` method
+
+3. change to use [testify/mock](https://github.com/stretchr/testify)
+4. remove tests about mock structs (such as BatchMock, QueryMock...), I think there's no need to test mock file.
 
 ## TODO
 
